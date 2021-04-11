@@ -11,4 +11,7 @@ phases:
       - echo 'Building...'
   post_build:
     commands:
-      - aws s3 sync --exact-timestamps --delete build s3://cb-dev-static
+    # https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html
+    # --exact-timestamps 更新時間が違うがsizeが同じ場合に同期されない問題を解消
+    # --delete コピー元のディレクトリで何か削除したらs3でも削除される
+      - aws s3 sync --exact-timestamps --delete . s3://cb-dev-static
