@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+  # パッケージのインストールのみに利用する事を推奨
+    runtime-versions:
+      nodejs: 12
+  pre_build:
+  # npmの依存関係のインストール・ECRへのサインインなど
+    commands:
+      - echo Installing source NPM dependencies...
+      - cd front
+      - yarn install
+  build:
+    commands:
+      - yarn build
+  post_build:
+    commands:
+      - echo Build completed on `date` 
+      - echo Distributing to S3...
+      - aws s3 sync --exact-timestamps --delete build s3://[デプロイ先バケット名]

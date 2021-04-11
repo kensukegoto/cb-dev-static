@@ -1,0 +1,34 @@
+# https://qiita.com/matsunao722/items/41d8c32dc233e70f421e
+
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands:
+      - echo install yarn...
+      - npm install -g yarn
+      - echo yarn -v
+      - yarn -v
+      - echo Installing souce NPM dependencies...
+      - yarn install
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Compiling the Node.js code
+      - yarn run build
+  post_build:
+    commands:
+      - tar cf /tmp/node_modules.tar node_modules
+      - echo Delete S3 Bucket object...
+      - aws s3 rm s3://バケット名 --rucursive
+      - echo create invalidation
+      - aws cloudfront create-invalidation --destribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --path '/*'
+  artifacts:
+    files:
+      - '**/*'
+    base-directory: dist
+  cache:
+    paths:
+      - /tmp/node_modules.tar
