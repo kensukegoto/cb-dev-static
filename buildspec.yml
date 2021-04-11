@@ -9,3 +9,6 @@ phases:
   build:
     commands:
       - echo 'Building...'
+  post_build:
+    commands:
+      - aws s3 sync --exact-timestamps --delete build s3://cb-dev-static
