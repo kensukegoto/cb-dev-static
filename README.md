@@ -7,6 +7,7 @@ buildspecの書き方を確認
 buildspecを模写する
 静的サイトをCodebuildする
 Sassをコンパイルするbuildを作る（productionビルド）
+CodeDeployする
 Nuxtをコンパイルするbuildを作る
 ビルドバッジをつける
 キャッシュ設定する
